@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "initialize-css": "^1.4.0",
+    "save": "^2.4.0",
+    "typeface-roboto": "^1.1.13",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
