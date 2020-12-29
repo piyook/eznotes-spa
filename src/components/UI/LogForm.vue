@@ -36,7 +36,7 @@
         :class="{ invalid: !retypedPw.isValid }"
         placeholder="Password"
         v-model.trim="retypedPw.val"
-        @blur="validateRetypePassword"
+        @keyup="validateRetypePassword"
       />
     </div>
     <p v-if="!retypedPw.isValid">{{ retypedPw.errorMsg }}</p>
@@ -88,11 +88,9 @@ export default {
         return;
       }
       if (this.isLoginMode) {
-        // TODO: perform validation
         // TODO: submit form to login API
         alert("submitted login");
       } else {
-        //TODO: perform validation
         //TODO: submit form to registration API
         alert("submitted registration");
       }
