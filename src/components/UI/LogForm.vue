@@ -38,8 +38,8 @@
         v-model.trim="retypedPw.val"
         @keyup="validateRetypePassword"
       />
+      <p v-if="!retypedPw.isValid">{{ retypedPw.errorMsg }}</p>
     </div>
-    <p v-if="!retypedPw.isValid">{{ retypedPw.errorMsg }}</p>
   </form>
   <button type="submit" class="btn btn-primary" @click.prevent="submitForm">
     <span v-if="isLoginMode"> Login </span>

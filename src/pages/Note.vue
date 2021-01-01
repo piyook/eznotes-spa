@@ -1,3 +1,15 @@
 <template>
-    <h1> Note Page </h1>
+  <note-content></note-content>
 </template>
+
+<script>
+import NoteContent from "../components/layouts/note/NoteContent";
+
+export default {
+  components: {
+    NoteContent,
+  },
+};
+</script>
+
+<style scoped></style>

@@ -1,10 +1,13 @@
 <template>
   <router-view />
 </template>
+<script>
+export default {};
+</script>
 
 <style>
-body,
-html {
+html,
+body {
   font-family: "Roboto";
 }
 

@@ -2,17 +2,17 @@
   <div class="container-centre">
     <h1>EZ-Notes</h1>
     <div id="form">
-      <login-page></login-page>
+      <login-layout></login-layout>
     </div>
   </div>
 </template>
 
 <script>
-import LoginPage from "../components/layouts/LoginPage";
+import LoginLayout from "../components/layouts/Login";
 
 export default {
   components: {
-    LoginPage,
+    LoginLayout,
   },
 };
 </script>

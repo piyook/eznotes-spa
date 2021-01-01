@@ -6,7 +6,14 @@ import store from './store'
 import "initialize-css/dist/initialize.css";
 import "typeface-roboto";
 
+import FeatureCard from "./components/global/FeatureCard";
+import PricingCard from "./components/global/PricingCard";
+import NoticeBoard from "./components/global/NoticeBoardCard";
+
 createApp(App)
 .use(store)
 .use(router)
+.component('feature-card', FeatureCard)
+.component('pricing-card', PricingCard)
+.component('notice-board-card', NoticeBoard)
 .mount('#app')
