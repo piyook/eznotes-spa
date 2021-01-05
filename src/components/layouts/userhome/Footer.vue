@@ -1,8 +1,23 @@
 <template>
   <div>
-    <p>Logout</p>
+    <p @click="logout">Logout</p>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$store.dispatch({
+        type: "changeLogStatus",
+        isLoggedIn: false,
+      });
+
+      this.$router.push("/");
+    },
+  },
+};
+</script>
 
 <style scoped>
 div {
@@ -16,5 +31,10 @@ p {
   padding: 10px;
   font-size: 25px;
   font-weight: 300;
+}
+
+p:hover {
+  color: #f2f20e;
+  cursor: pointer;
 }
 </style>

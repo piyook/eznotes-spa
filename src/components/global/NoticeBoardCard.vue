@@ -29,8 +29,8 @@ div {
 }
 
 div:hover {
-  /* border: 4px solid rgba(238, 79, 79, 0.597); */
   box-shadow: 0px 0px 10px 5px #d13838;
+  cursor: pointer;
 }
 
 #delete {

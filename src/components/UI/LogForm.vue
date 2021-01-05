@@ -88,8 +88,14 @@ export default {
         return;
       }
       if (this.isLoginMode) {
-        // TODO: submit form to login API
-        alert("submitted login");
+        // TODO: submit form to login API & check result- for now allow any login
+        //if OK need to generate a time-limited access token
+        this.$store.dispatch({
+          type: "changeLogStatus",
+          isLoggedIn: true,
+        });
+
+        this.$router.push("/userhome");
       } else {
         //TODO: submit form to registration API
         alert("submitted registration");
