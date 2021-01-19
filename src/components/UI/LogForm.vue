@@ -82,17 +82,16 @@ export default {
     },
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.validateForm();
       if (!this.formIsValid) {
         return;
       }
       if (this.isLoginMode) {
-        // TODO: submit form to login API & check result- for now allow any login
-        //if OK need to generate a time-limited access token
-        this.$store.dispatch({
-          type: "changeLogStatus",
-          isLoggedIn: true,
+        await this.$store.dispatch({
+          type: "login",
+          email: this.email.val,
+          password: this.password.val,
         });
 
         this.$router.push("/userhome");

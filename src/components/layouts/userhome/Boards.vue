@@ -1,14 +1,14 @@
 <template>
   <section>
     <notice-board-card
-      v-for="(board, key) in noticeboards"
-      :key="key"
-      @click="viewBoard(key)"
+      v-for="board in noticeboards"
+      :key="board.id"
+      @click="viewBoard(board.id)"
       :class="board.colour"
     >
       <template v-slot:title>{{ board.title }}</template>
-      <p>{{ board.summary }}</p>
-      <img src="../../../assets/cog.png" @click.stop="boardSettings(key)" />
+      <p>{{ board.body }}</p>
+      <img src="../../../assets/cog.png" @click.stop="boardSettings(board.id)" />
     </notice-board-card>
 
     <notice-board-card class="white" @click="newBoard">
@@ -29,30 +29,20 @@ export default {
     viewBoard(boardId) {
       this.$router.push("/noticeboard/" + boardId);
     },
-    boardSummary(summary) {
-      if (summary.length > 40) summary = summary.substring(0, 40) + " | ... more ";
-      return summary;
+    boardbody(body) {
+      if (body.length > 40) body = body.substring(0, 40) + " | ... more ";
+      return body;
     },
     boardSettings(boardId) {
       this.$router.push("/noticeboard/settings/" + boardId);
     },
     newBoard() {
-      let time = Date.now().toString();
-      let newBoardId = +time.slice(-5);
-      let isUniqueId = this.$store.dispatch({
-        type: "checkUniqueBoardId",
-        boardId: this.$route.params.boardId,
-      });
-
-      if (!isUniqueId) {
-        this.newBoard();
-      }
-
-      this.boardSettings(newBoardId);
+      this.$router.push("/noticeboard/settings/new");
     },
   },
-  mounted() {
-    this.noticeboards = this.$store.getters.getBoardSummary;
+  async mounted() {
+    await this.$store.dispatch("boards/downloadBoards");
+    this.noticeboards = this.$store.getters["boards/getBoardSummary"];
   },
 };
 </script>

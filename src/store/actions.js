@@ -1,42 +1,76 @@
+import router from "../router/index.js";
+
 export default {
-
-  saveNote(context, payload) {
-    context.commit("updateNote", payload);
+  changeLogStatus(context, payload) {
+    context.commit("updateAuth", payload);
   },
 
-  deleteNote(context, payload) {
-    context.commit("delNote", payload);
+  async login(context, payload) {
+    let data = { email: payload.email, password: payload.password };
+
+    const response = await fetch("api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      body: JSON.stringify(data),
+      credentials: "include",
+      mode: "cors",
+    });
+
+    const responseData = await response.json();
+
+    await context.commit("updateAuth", { isLoggedIn: true });
+
+    context.state.userInfo.token = responseData.jwt;
   },
 
-  newBoard(context, payload) {
-    context.commit("createNewBoard", payload);
-  },
+  async isServerError(context, response) {
+    if (response.status == "401") {
+      context.commit("updateAuth", { isLoggedIn: false }, { root: true });
 
-  saveBoard(context, payload) {
-    context.commit("updateBoard", payload);
-  },
+      router.push("/login");
 
-  deleteBoard(context, payload) {
-    context.commit("delBoard", payload);
-  },
-
-  checkUniqueNoteId(context, payload) {
-    let currentBoardContents = context.state.boardContent[0][payload.boardId];
-    if (typeof currentBoardContents === "undefined") {
-      return true;
+      const error = new Error(
+        "You are not authorized to access this resource - Please Login"
+      );
+      throw error;
     }
 
-    return payload.noteId in currentBoardContents
-      ? true
-      : false;
+    if (!response.ok) {
+      const error = new Error(
+        "There was a problem connecting - Please Try again later"
+      );
+      throw error;
+    }
   },
 
-  checkUniqueBoardId(context, payload) {
-    let currentBoards = context.state.boardSummary[0];
-    if (typeof currentBoards === "undefined") {
+  async checkRefreshToken() {
+
+    if (getCookie("RefreshTimer") == "") {
+      const refresh = await fetch("/api/refresh", {
+        method: "POST",
+        credentials: "include",
+        mode: "cors",
+      });
+
+      return refresh.ok;
+    } else {
       return true;
     }
-
-    return payload.boardId in currentBoards ? true : false;
   },
-};
+}
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }

@@ -19,7 +19,7 @@ const routes = [
     name : 'noticeboard',
     component: () => import(/* webpackChunkName: "NoticeBoard" */ '../pages/NoticeBoard.vue'),
     meta : {requiresAuth: true},
-    beforeEnter: (to,__,next) => {
+   beforeEnter: (to,__,next) => {
 
     if (isNaN(to.params.boardId)) {
       router.push("/userhome");
@@ -43,6 +43,20 @@ const routes = [
     path: '/login',
     name : 'login',
     component: () => import(/* webpackChunkName: "LogIn" */ '../pages/LogIn.vue'),
+    beforeEnter: async ()=>{
+      const response = await fetch("/api/refresh", {
+        method: "POST",
+        credentials: "include",
+        mode: "cors",
+        });
+       
+      
+      if (response.ok) {
+        store.commit('updateAuth',{isLoggedIn:true},{root:true});
+        router.push("/userhome");
+
+      }
+    }
   },
   {
     path: '/register',

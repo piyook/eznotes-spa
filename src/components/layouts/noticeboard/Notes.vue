@@ -1,14 +1,14 @@
 <template>
   <section>
     <notice-board-card
-      v-for="(note, key) in notes"
-      :key="key"
-      @click="openNote(key)"
+      v-for="note in notes"
+      :key="note.id"
+      @click="openNote(note.id)"
       :class="note.colour"
     >
       <template v-slot:title>{{ note.title }}</template>
       <p>{{ note.date }}</p>
-      <p id="noteText">{{ noteSummary(note.note) }}</p>
+      <p id="noteText">{{ noteSummary(note.body) }}</p>
     </notice-board-card>
 
     <notice-board-card class="white" @click="newNote">
@@ -30,28 +30,20 @@ export default {
       this.$router.push("/note/" + this.$route.params.boardId + "/" + noteId);
     },
     noteSummary(note) {
-      if (note.length > 40) note = note.substring(0, 40) + " | ... more ";
+      if (note.length > 150) note = note.substring(0, 150) + " | ... more ";
       return note;
     },
     newNote() {
-      let time = Date.now().toString();
-      let newNoteId = +time.slice(-5);
-      let isUniqueId = this.$store.dispatch({
-        type: "checkUniqueNoteId",
-        boardId: this.$route.params.boardId,
-        noteId: newNoteId,
-      });
-
-      if (!isUniqueId) {
-        this.newNote();
-      }
-
-      this.openNote(newNoteId);
+      this.openNote("new");
     },
   },
 
-  mounted() {
-    this.notes = this.$store.getters.getBoardContent(this.$route.params.boardId);
+  async mounted() {
+    await this.$store.dispatch({
+      type: "notes/downloadNotes",
+      boardId: this.$route.params.boardId,
+    });
+    this.notes = this.$store.getters["notes/getBoardContent"];
   },
 };
 </script>

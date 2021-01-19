@@ -1,7 +1,7 @@
 <template>
   <div>
     <img src="../../../assets/back-arrow.png" @click="goHome" />
-    <h1>{{ boardTitle }}</h1>
+    <h1 v-if="isBoardAvailable">{{ boardTitle }}</h1>
     <p>Click a Note to Read or Edit</p>
   </div>
 </template>
@@ -10,14 +10,19 @@
 export default {
   computed: {
     boardTitle() {
-      // return this.$route.params.boardNo;
-      return this.$store.getters.getBoardTitle(this.$route.params.boardId);
+      return this.$store.getters["boards/getBoardTitle"](this.$route.params.boardId);
+    },
+    isBoardAvailable() {
+      return this.$store.getters["boards/isBoardDataLoaded"];
     },
   },
   methods: {
     goHome() {
       this.$router.push("/userhome");
     },
+  },
+  async beforeMount() {
+    await this.$store.dispatch("boards/downloadBoards");
   },
 };
 </script>

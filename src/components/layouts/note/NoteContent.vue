@@ -5,7 +5,7 @@
       <img src="../../../assets/save.png" @click="save" />
       <img src="../../../assets/trashcan.png" @click="deleteNote" />
     </div>
-    <form>
+    <form v-if="isNoteAvailable">
       <div id="title">
         <label for="noteTitle">Title:</label>
         <input
@@ -72,39 +72,50 @@ export default {
       date: "",
       body: "",
       chosenNoteColour: "",
-      isNewNote: false,
     };
   },
   methods: {
     goBack() {
       this.$router.back();
     },
-    save() {
+    async save() {
       this.noteContent.colour = this.chosenNoteColour;
       this.noteContent.title = this.title;
-      this.noteContent.note = this.body;
-      this.noteContent.date = this.date;
+      this.noteContent.body = this.body;
+      this.noteContent.boardId = this.$route.params.boardId;
+      this.noteContent.userId = 1;
 
-      this.$store.dispatch({
-        type: "saveNote",
-        boardId: this.$route.params.boardId,
-        noteId: this.$route.params.noteId,
-        newNote: this.noteContent,
-      });
+      if (this.$route.params.noteId === "new") {
+        await this.$store.dispatch({
+          type: "notes/newNote",
+          boardId: this.$route.params.boardId,
+          noteData: this.noteContent,
+        });
+      } else {
+        await this.$store.dispatch({
+          type: "notes/saveNote",
+          boardId: this.$route.params.boardId,
+          noteId: this.$route.params.noteId,
+          noteData: this.noteContent,
+        });
+      }
+
+      await this.$store.commit("notes/setNotesLoaded", { setValue: false });
 
       this.$router.push("/noticeboard/" + this.$route.params.boardId);
     },
-    deleteNote() {
+    async deleteNote() {
       let approveDelete = prompt(
         "deleting note " + this.$route.params.noteId + ": Type 'YES' or 'NO'"
       );
 
       if (approveDelete == "YES") {
-        this.$store.dispatch({
-          type: "deleteNote",
+        await this.$store.dispatch({
+          type: "notes/deleteNote",
           boardId: this.$route.params.boardId,
           noteId: this.$route.params.noteId,
         });
+        await this.$store.commit("notes/setNotesLoaded", { setValue: false });
         this.$router.push("/noticeboard/" + this.$route.params.boardId);
       }
     },
@@ -124,22 +135,27 @@ export default {
     noteBackgroundColour() {
       return this.chosenNoteColour;
     },
+    isNoteAvailable() {
+      return this.$store.getters["notes/isNoteDataLoaded"];
+    },
   },
-  mounted() {
+  async mounted() {
     let board = this.$route.params.boardId;
-    let note = +this.$route.params.noteId;
+    let note = this.$route.params.noteId;
 
-    this.noteContent = this.$store.getters.getNoteContent(board, note);
+    await this.$store.dispatch({
+      type: "notes/downloadNotes",
+      boardId: board,
+    });
+
+    this.noteContent = this.$store.getters["notes/getNoteContent"](note);
 
     this.chosenNoteColour = this.noteContent.colour;
     this.title = this.noteContent.title;
-    this.body = this.noteContent.note;
+    this.body = this.noteContent.body;
     this.date = this.noteContent.date;
-    if (this.chosenNoteColour == "new") {
-      this.chosenNoteColour = "yellow";
-      this.isNewNote = true;
-      var utc = new Date().toUTCString();
-      this.date = utc;
+    if (this.note == "new") {
+      this.chosenNoteColour = "white";
     }
   },
 };

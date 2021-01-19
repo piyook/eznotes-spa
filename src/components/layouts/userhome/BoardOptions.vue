@@ -21,7 +21,7 @@
       <div id="board">
         <p id="summary-label">Summary</p>
         <textarea
-          v-model.trim="summary"
+          v-model.trim="body"
           id="boardData"
           aria-describedby="board Body"
           placeholder="Enter A Summary Of Board Contents"
@@ -68,46 +68,48 @@ export default {
     return {
       boardContent: {},
       title: "",
-      summary: "",
+      body: "",
       chosenBoardColour: "",
-      isNewBoard: false,
+      boardId: 0,
     };
   },
   methods: {
     goBack() {
       this.$router.back();
     },
-    save() {
+    async save() {
       this.boardContent.colour = this.chosenBoardColour;
       this.boardContent.title = this.title;
-      this.boardContent.summary = this.summary;
-      this.boardContent.date = this.date;
+      this.boardContent.body = this.body;
 
-      this.$store.dispatch({
-        type: "saveBoard",
-        boardId: this.$route.params.boardId,
-        boardUpdate: this.boardContent,
-      });
-
-      if (this.isNewBoard) {
-        this.$store.dispatch({
-          type: "newBoard",
-          boardId: this.$route.params.boardId,
+      if (this.boardId === "new") {
+        await this.$store.dispatch({
+          type: "boards/newBoard",
+          boardData: this.boardContent,
+        });
+      } else {
+        await this.$store.dispatch({
+          type: "boards/saveBoard",
+          boardId: this.boardId,
+          boardUpdate: this.boardContent,
         });
       }
 
-      this.$router.push("/noticeboard/" + this.$route.params.boardId);
+      this.$router.push("/noticeboard/");
     },
-    deleteBoard() {
+    async deleteBoard() {
       let approveDelete = prompt(
         "deleting board " + this.$route.params.boardId + ": Type 'YES' or 'NO'"
       );
 
       if (approveDelete == "YES") {
-        this.$store.dispatch({
-          type: "deleteBoard",
-          boardId: this.$route.params.boardId,
+        await this.$store.dispatch({
+          type: "boards/deleteBoard",
+          boardId: this.boardId,
         });
+
+        this.$store.commit("boards/setBoardsLoaded", { setValue: false });
+
         this.$router.push("/userhome");
       }
     },
@@ -122,7 +124,7 @@ export default {
   },
   computed: {
     boardSummary() {
-      return this.boardContent.summary;
+      return this.boardContent.body;
     },
     boardBackgroundColour() {
       return this.chosenBoardColour;
@@ -130,13 +132,13 @@ export default {
   },
   mounted() {
     let board = this.$route.params.boardId;
-    this.boardContent = this.$store.getters.getBoardDetails(board);
+    this.boardContent = this.$store.getters["boards/getBoardDetails"](board);
     this.chosenBoardColour = this.boardContent.colour;
     this.title = this.boardContent.title;
-    this.summary = this.boardContent.summary;
-    if (this.chosenBoardColour == "new") {
-      this.chosenBoardColour = "yellow";
-      this.isNewBoard = true;
+    this.body = this.boardContent.body;
+    this.boardId = this.$route.params.boardId;
+    if (this.boardId == "new") {
+      this.chosenBoardColour = "white";
     }
   },
 };
