@@ -1,84 +1,56 @@
 export default {
   async downloadNotes(context, payload) {
-  
-    await context.dispatch("checkRefreshToken", null, { root: true });
 
-    const response = await fetch("/api/api/" + payload.boardId, {
-      method: "GET",
-      credentials: "include",
-      mode: "cors",
-    });
-
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
-
-    const responseData = await response.json();
+    const responseData = await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "GET" ,
+        fetchUri: "/api/" + payload.boardId,
+      },
+      { root: true }
+    );
 
     await context.commit("downloadNotes", { boardContent: responseData });
-
-    await context.commit("setNotesLoaded", { setValue: true });
   },
 
   async saveNote(context, payload) {
-    await context.dispatch("checkRefreshToken", null, { root: true });
-
-    const response = await fetch(
-      "/api/api/" + payload.boardId + "/" + payload.noteId,
+  
+    await context.dispatch(
+      "contactAPI",
       {
-        method: "PUT",
-        body: JSON.stringify(payload.noteData),
-        credentials: "include",
-        mode: "cors",
-      }
+        fetchMethod: "PUT",
+        fetchUri: "/api/" + payload.boardId + "/" + payload.noteId,
+        fetchBody : JSON.stringify(payload.noteData),
+      },
+      { root: true }
     );
 
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
   },
 
   async newNote(context, payload) {
-    await context.dispatch("checkRefreshToken", null, { root: true });
+    
+    await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "POST",
+        fetchUri: "/api/" + payload.boardId,
+        fetchBody : JSON.stringify(payload.noteData),
+      },
+      { root: true }
+    );
 
-    const response = await fetch("/api/api/" + payload.boardId, {
-      method: "POST",
-      body: JSON.stringify(payload.noteData),
-      credentials: "include",
-      mode: "cors",
-    });
-
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
   },
 
   async deleteNote(context, payload) {
-    await context.dispatch("checkRefreshToken", null, { root: true });
-
-    const response = await fetch(
-      "/api/api/" + payload.boardId + "/" + payload.noteId,
+   
+    await context.dispatch(
+      "contactAPI",
       {
-        method: "DELETE",
-        credentials: "include",
-        mode: "cors",
-      }
+        fetchMethod: "DELETE",
+        fetchUri: "/api/" + payload.boardId + "/" + payload.noteId,
+      },
+      { root: true }
     );
 
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
   },
 };

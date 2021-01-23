@@ -1,9 +1,19 @@
 <template>
   <div>
-    <p>logged in as: XXXXXX</p>
-    <h1>Your EZ-NoticeBoards</h1>
+    <p>{{ userEmail }}</p>
+    <h1>Your NoticeBoards</h1>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    userEmail() {
+      return this.$store.getters.getUser.email;
+    },
+  },
+};
+</script>
 
 <style scoped>
 div {
@@ -21,8 +31,10 @@ p {
   text-align: right;
   padding: 10px;
   margin-right: 50px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 300;
+  font-style: italic;
+  color: lightgrey;
 }
 
 * {

@@ -1,11 +1,18 @@
 <template>
+  <alert-modal v-if="isModalVisible" v-bind:is-active="isModalVisible">
+    <template v-slot:title>Warning</template>
+    Are You Sure You Want to Delete This?
+    <template v-slot:yesButton>YES</template>
+    <template v-slot:cancelButton>NO</template>
+  </alert-modal>
+
   <div id="page" :class="noteBackgroundColour">
     <div id="operationBar">
       <img src="../../../assets/back-arrow.png" @click="goBack" />
       <img src="../../../assets/save.png" @click="save" />
       <img src="../../../assets/trashcan.png" @click="deleteNote" />
     </div>
-    <form v-if="isNoteAvailable">
+    <form>
       <div id="title">
         <label for="noteTitle">Title:</label>
         <input
@@ -71,7 +78,8 @@ export default {
       title: "",
       date: "",
       body: "",
-      chosenNoteColour: "",
+      chosenNoteColour: "white",
+      modalVisibility: false,
     };
   },
   methods: {
@@ -105,11 +113,15 @@ export default {
       this.$router.push("/noticeboard/" + this.$route.params.boardId);
     },
     async deleteNote() {
-      let approveDelete = prompt(
-        "deleting note " + this.$route.params.noteId + ": Type 'YES' or 'NO'"
-      );
+      this.modalVisibility = true;
+      document.documentElement.style.overflow = "hidden";
 
-      if (approveDelete == "YES") {
+      let modalResponse = await this.$store.dispatch("awaitModalResponse");
+
+      this.modalVisibility = false;
+      document.documentElement.style.overflow = "auto";
+
+      if (modalResponse) {
         await this.$store.dispatch({
           type: "notes/deleteNote",
           boardId: this.$route.params.boardId,
@@ -135,8 +147,8 @@ export default {
     noteBackgroundColour() {
       return this.chosenNoteColour;
     },
-    isNoteAvailable() {
-      return this.$store.getters["notes/isNoteDataLoaded"];
+    isModalVisible() {
+      return this.modalVisibility;
     },
   },
   async mounted() {

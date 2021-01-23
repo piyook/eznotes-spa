@@ -6,7 +6,6 @@ export default {
     namespaced: true,
     state() {
         return {
-            isNotesLoaded:false,
             boardContent: [
               {
                 0: {

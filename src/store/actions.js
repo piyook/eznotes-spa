@@ -8,19 +8,104 @@ export default {
   async login(context, payload) {
     let data = { email: payload.email, password: payload.password };
 
-    const response = await fetch("api/login", {
+    const responseData = await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "POST",
+        fetchUri: "/api/login",
+        fetchBody: JSON.stringify(data),
+      },
+      { root: true }
+    );
+   
+    context.commit("setUser", { email: responseData.email });
+
+    await context.commit("updateAuth", { isLoggedIn: true });
+
+  },
+
+  async register(context, payload){
+
+    let data = { email: payload.email, password: payload.password };
+
+    const responseData = await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "POST",
+        fetchUri: "/api/register",
+        fetchBody: JSON.stringify(data),
+      },
+      { root: true }
+    );
+   
+    context.commit("setUser", { email: responseData.email });
+
+    await context.commit("updateAuth", { isLoggedIn: true });
+
+  },
+
+  async logout(context){
+
+    const response = await fetch("/api/logout", {
       method: "POST",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
-      body: JSON.stringify(data),
       credentials: "include",
       mode: "cors",
     });
 
-    const responseData = await response.json();
+    const serverError = await context.dispatch("isServerError", response, {
+      root: true,
+    });
+    if (serverError) {
+      return;
+    }
 
-    await context.commit("updateAuth", { isLoggedIn: true });
+    context.dispatch({
+      type: "changeLogStatus",
+      isLoggedIn: false,
+    });
 
-    context.state.userInfo.token = responseData.jwt;
+    context.commit("boards/logoutBoards");
+    context.commit("notes/logoutNotes");
+
+  },
+
+  async contactAPI(context, payload){
+
+    await context.dispatch("checkRefreshToken", null, { root: true });
+
+    context.commit("updateLoadingStatus", {status:true}, { root: true });
+
+    let response = null;
+
+    if (payload.fetchMethod === 'GET' || payload.fetchMethod === 'DELETE') {
+
+      response = await fetch(payload.fetchUri, {
+        method: payload.fetchMethod,
+        credentials: "include",
+        mode: "cors",
+      });
+
+    } else {
+
+      response = await fetch(payload.fetchUri, {
+        method: payload.fetchMethod,
+        credentials: "include",
+        body: payload.fetchBody,
+        mode: "cors",
+      });
+
+  }
+
+    context.commit("updateLoadingStatus", {status:false}, { root: true });
+
+    const serverError = await context.dispatch("isServerError", response, {
+      root: true,
+    });
+    if (serverError) {
+      return;
+    }
+
+    return await response.json();
   },
 
   async isServerError(context, response) {
@@ -57,6 +142,12 @@ export default {
       return true;
     }
   },
+
+  async awaitModalResponse(context){
+    return await new Promise((resolve) => 
+    context.commit('setModal', {modalPromise : resolve}));
+},
+
 }
 
   function getCookie(cname) {

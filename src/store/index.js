@@ -12,7 +12,9 @@ export default createStore({
   state() {
     return {
       isLoggedIn: false,
-      userInfo: {email: "", token:"" },
+      userInfo: {email: ""},
+      isLoading: false,
+      modalPromise:null,
     };
   },
   mutations: rootMutations,

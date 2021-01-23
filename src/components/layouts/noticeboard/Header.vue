@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="boardColour">
     <img src="../../../assets/back-arrow.png" @click="goHome" />
     <h1 v-if="isBoardAvailable">{{ boardTitle }}</h1>
     <p>Click a Note to Read or Edit</p>
@@ -11,6 +11,9 @@ export default {
   computed: {
     boardTitle() {
       return this.$store.getters["boards/getBoardTitle"](this.$route.params.boardId);
+    },
+    boardColour() {
+      return this.$store.getters["boards/getBoardColour"](this.$route.params.boardId);
     },
     isBoardAvailable() {
       return this.$store.getters["boards/isBoardDataLoaded"];
@@ -68,5 +71,25 @@ p {
   padding-block-end: 0;
   padding-inline-start: 0;
   padding-inline-end: 0;
+}
+
+.yellow {
+  background: #f8da79;
+}
+
+.blue {
+  background: #75d9e9;
+}
+
+.green {
+  background: #8bf599;
+}
+
+.pink {
+  background: #fea1c9;
+}
+
+.red {
+  background: #f65f6a;
 }
 </style>

@@ -96,8 +96,13 @@ export default {
 
         this.$router.push("/userhome");
       } else {
-        //TODO: submit form to registration API
-        alert("submitted registration");
+        await this.$store.dispatch({
+          type: "register",
+          email: this.email.val,
+          password: this.password.val,
+        });
+
+        this.$router.push("/userhome");
       }
     },
     validateEmail() {

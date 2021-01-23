@@ -4,6 +4,11 @@ export default {
     return board["title"];
   },
 
+  getBoardColour: (state) => (id) => {
+    let board = state.boardSummary.find((value) => value.id == id);
+    return board["colour"];
+  },
+
   getBoardSummary(state) {
     return state.boardSummary;
   },
@@ -13,7 +18,7 @@ export default {
       number: boardId,
       title: "",
       summary: "",
-      colour: "new",
+      colour: "white",
     };
 
     let board = state.boardSummary.find((value) => value.id == boardId);

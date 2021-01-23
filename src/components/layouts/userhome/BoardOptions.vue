@@ -1,4 +1,11 @@
 <template>
+  <alert-modal v-if="isModalVisible" v-bind:is-active="isModalVisible">
+    <template v-slot:title>Warning</template>
+    Are You Sure You Want to Delete This?
+    <template v-slot:yesButton>YES</template>
+    <template v-slot:cancelButton>NO</template>
+  </alert-modal>
+
   <div id="page" :class="boardBackgroundColour">
     <div id="operationBar">
       <img src="../../../assets/back-arrow.png" @click="goBack" />
@@ -71,9 +78,14 @@ export default {
       body: "",
       chosenBoardColour: "",
       boardId: 0,
+      modalVisibility: false,
     };
   },
   methods: {
+    logResponse(data) {
+      this.modalResponse = data;
+      console.log(this.modalResponse);
+    },
     goBack() {
       this.$router.back();
     },
@@ -98,11 +110,15 @@ export default {
       this.$router.push("/noticeboard/");
     },
     async deleteBoard() {
-      let approveDelete = prompt(
-        "deleting board " + this.$route.params.boardId + ": Type 'YES' or 'NO'"
-      );
+      this.modalVisibility = true;
+      document.documentElement.style.overflow = "hidden";
 
-      if (approveDelete == "YES") {
+      let modalResponse = await this.$store.dispatch("awaitModalResponse");
+
+      this.modalVisibility = false;
+      document.documentElement.style.overflow = "auto";
+
+      if (modalResponse) {
         await this.$store.dispatch({
           type: "boards/deleteBoard",
           boardId: this.boardId,
@@ -128,6 +144,9 @@ export default {
     },
     boardBackgroundColour() {
       return this.chosenBoardColour;
+    },
+    isModalVisible() {
+      return this.modalVisibility;
     },
   },
   mounted() {

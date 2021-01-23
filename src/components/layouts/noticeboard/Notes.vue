@@ -1,6 +1,6 @@
 <template>
   <section>
-    <notice-board-card
+    <note-card
       v-for="note in notes"
       :key="note.id"
       @click="openNote(note.id)"
@@ -9,12 +9,12 @@
       <template v-slot:title>{{ note.title }}</template>
       <p>{{ note.date }}</p>
       <p id="noteText">{{ noteSummary(note.body) }}</p>
-    </notice-board-card>
+    </note-card>
 
-    <notice-board-card class="white" @click="newNote">
+    <note-card class="white" @click="newNote">
       <template v-slot:title> + Add New</template>
       <p>click to create a new note</p>
-    </notice-board-card>
+    </note-card>
   </section>
 </template>
 

@@ -20,4 +20,9 @@ export default {
       setBoardsLoaded(state, payload){
             state.isBoardsLoaded = payload.setValue;
           },
+      logoutBoards(state){
+            state.boardSummary = null;
+            state.isBoardsLoaded = false;
+      },
+      
 }

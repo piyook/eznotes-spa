@@ -1,4 +1,5 @@
 <template>
+  <load-spinner v-if="isLoading"></load-spinner>
   <section>
     <notice-board-card
       v-for="board in noticeboards"
@@ -24,6 +25,11 @@ export default {
     return {
       noticeboards: [],
     };
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isAppLoading;
+    },
   },
   methods: {
     viewBoard(boardId) {

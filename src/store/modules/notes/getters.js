@@ -13,7 +13,7 @@
           title: "",
           date: "",
           body: "",
-          colour: "new",
+          colour: "white",
         };
     
         let board = state.boardContent.find(
@@ -26,4 +26,5 @@
           return board;
     
       },
+
  }

@@ -13,4 +13,8 @@ export default {
   setNotesLoaded(state, payload) {
     state.isNotesLoaded = payload.setValue;
   },
+  logoutNotes(state){
+    state.boardContent = null;
+}
+  
 };

@@ -13,15 +13,15 @@ export default {};
 div {
   padding-top: 20px;
   width: 300px;
-  height: 400px;
+  height: 200px;
   background-color: #f2f20e;
   color: #000000;
   font-size: 30px;
   font-weight: 300;
   text-align: center;
   margin: 50px;
-  /* box-shadow: 5px 5px 5px grey; */
-  border: 3px solid black;
+  box-shadow: 5px 5px 5px grey;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

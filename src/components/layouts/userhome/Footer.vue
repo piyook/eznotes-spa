@@ -1,19 +1,19 @@
 <template>
   <div>
-    <p @click="logout">Logout</p>
+    <p @click.prevent="logout">Logout</p>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    logout() {
-      this.$store.dispatch({
-        type: "changeLogStatus",
-        isLoggedIn: false,
+    async logout() {
+      await this.$store.dispatch({
+        type: "logout",
       });
 
       this.$router.push("/");
+      return;
     },
   },
 };

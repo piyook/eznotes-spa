@@ -1,22 +1,17 @@
 export default {
   async downloadBoards(context) {
-    
-    await context.dispatch("checkRefreshToken", null, { root: true });
-
-    const response = await fetch("/api/api", {
-      method: "GET",
-      credentials: "include",
-      mode: "cors",
-    });
-
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
+    if (context.state.isBoardsLoaded) {
       return;
     }
 
-    const responseData = await response.json();
+    const responseData = await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "GET",
+        fetchUri: "/api",
+      },
+      { root: true }
+    );
 
     await context.commit("downloadBoards", { boardSummary: responseData });
 
@@ -24,55 +19,49 @@ export default {
   },
 
   async newBoard(context, payload) {
-    await context.dispatch("checkRefreshToken", null, { root: true });
+    
+     await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "POST",
+        fetchUri: "/api",
+        fetchBody : JSON.stringify(payload.boardData),
+      },
+      { root: true }
+    );
 
-    const response = await fetch("/api/api", {
-      method: "POST",
-      body: JSON.stringify(payload.boardData),
-      credentials: "include",
-      mode: "cors",
-    });
+    await context.commit("setBoardsLoaded", { setValue: false });
 
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
   },
 
   async saveBoard(context, payload) {
-    await context.dispatch("checkRefreshToken", null, { root: true });
+    
+    await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "PUT",
+        fetchUri: "/api/" + payload.boardId,
+        fetchBody : JSON.stringify(payload.boardUpdate),
+      },
+      { root: true }
+    );
 
-    const response = await fetch("/api/api/" + payload.boardId, {
-      method: "PUT",
-      body: JSON.stringify(payload.boardUpdate),
-      credentials: "include",
-      mode: "cors",
-    });
+    await context.commit("setBoardsLoaded", { setValue: false });
 
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
   },
 
   async deleteBoard(context, payload) {
-    await context.dispatch("checkRefreshToken", null, { root: true });
+    
+     await context.dispatch(
+      "contactAPI",
+      {
+        fetchMethod: "DELETE",
+        fetchUri: "/api/" + payload.boardId,
+      },
+      { root: true }
+    );
 
-    const response = await fetch("/api/api/" + payload.boardId, {
-      method: "DELETE",
-      credentials: "include",
-      mode: "cors",
-    });
+    await context.commit("setBoardsLoaded", { setValue: false });
 
-    const serverError = await context.dispatch("isServerError", response, {
-      root: true,
-    });
-    if (serverError) {
-      return;
-    }
   },
 };

@@ -21,11 +21,11 @@ module.exports = {
 
     devServer: {
       proxy: { 
-        '/api/*':{
+        '/api':{
               target:'http://eznotes-api',
               changeOrigin:true,
-              pathRewrite: { '/api': ""}
-        } 
+        },
+         
       },
       headers: { "Access-Control-Allow-Origin": "http://localhost:8080",
       "Access-Control-Allow-Methods": "OPTIONS,GET,POST,PUT,DELETE",
