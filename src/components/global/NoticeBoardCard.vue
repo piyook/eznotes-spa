@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="board">
     <slot name="title"></slot>
     <slot name="default"></slot>
   </div>
@@ -20,16 +20,17 @@ div {
   font-weight: 300;
   text-align: center;
   margin: 50px;
-  /* box-shadow: 5px 5px 5px grey; */
-  border: 3px solid black;
+  border: 2px solid rgb(220, 220, 220);
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.5s ease-in-out;
 }
 
-div:hover {
-  box-shadow: 0px 0px 10px 5px #d13838;
+#board:hover {
+  transform: scale(1.15);
   cursor: pointer;
 }
 

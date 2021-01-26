@@ -49,4 +49,10 @@ p {
   padding-inline-start: 0;
   padding-inline-end: 0;
 }
+
+@media only screen and (max-width: 750px) {
+  h1 {
+    font-size: 40px;
+  }
+}
 </style>

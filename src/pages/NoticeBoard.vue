@@ -2,8 +2,9 @@
   <div id="page">
     <header-section></header-section>
     <notes-summary></notes-summary>
+
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
 </template>
 
 <script>

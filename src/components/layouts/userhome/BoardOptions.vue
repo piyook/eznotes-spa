@@ -1,5 +1,5 @@
 <template>
-  <alert-modal v-if="isModalVisible" v-bind:is-active="isModalVisible">
+  <alert-modal v-bind:is-active="isModalVisible">
     <template v-slot:title>Warning</template>
     Are You Sure You Want to Delete This?
     <template v-slot:yesButton>YES</template>
@@ -38,7 +38,7 @@
       </div>
 
       <div id="boardColour">
-        <div id="boardLabel">board Colour</div>
+        <div id="boardLabel">Choose Board Colour</div>
         <div
           @click="colourSelect('yellow')"
           class="yellow colorBox"
@@ -164,6 +164,9 @@ export default {
 </script>
 
 <style scoped>
+p {
+  text-align: center;
+}
 #page {
   border: 1px solid black;
   margin: 60px;
@@ -306,6 +309,16 @@ img:hover {
     height: 25px;
     width: 25px;
     margin: 5px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    margin: 10px 0px 0px 10px;
   }
 }
 </style>

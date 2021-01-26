@@ -55,15 +55,18 @@ const routes = [
         mode: "cors",
       });
 
-      const responseData = await response.json();
-
       if (response.ok) {
         store.commit("updateAuth", { isLoggedIn: true }, { root: true });
 
         store.commit("setUser", { email: responseData.email });
 
         router.push("/userhome");
+      } else {
+        router.push("/error");
+        return;
       }
+
+      const responseData = await response.json();
     },
   },
   {
@@ -71,6 +74,12 @@ const routes = [
     name: "register",
     component: () =>
       import(/* webpackChunkName: "Register" */ "../pages/LogIn.vue"),
+  },
+  {
+    path: "/error",
+    name: "error",
+    component: () =>
+      import(/* webpackChunkName: "Register" */ "../pages/error.vue"),
   },
   {
     path: "/:pathMatch(.*)*",

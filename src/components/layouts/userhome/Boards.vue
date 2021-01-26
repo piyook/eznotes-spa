@@ -2,12 +2,18 @@
   <load-spinner v-if="isLoading"></load-spinner>
   <section>
     <notice-board-card
-      v-for="board in noticeboards"
+      v-for="(board, index) in noticeboards"
       :key="board.id"
       @click="viewBoard(board.id)"
       :class="board.colour"
     >
-      <template v-slot:title>{{ board.title }}</template>
+      <template v-slot:title>
+        <span class="smallText">
+          Noticeboard {{ index + 1 }} <br />
+          <br />
+        </span>
+        {{ board.title }}</template
+      >
       <p>{{ board.body }}</p>
       <img src="../../../assets/cog.png" @click.stop="boardSettings(board.id)" />
     </notice-board-card>
@@ -54,11 +60,21 @@ export default {
 </script>
 
 <style scoped>
+.smallText {
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: white;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
+  margin-top: -25px;
+}
 section {
   flex-grow: 1;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 p {

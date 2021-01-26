@@ -1,19 +1,21 @@
 <template>
   <teleport to="body">
-    <div class="modal" @click.stop="closeModal">
-      <div id="modal" @click.stop="blankEvent">
-        <div id="title"><slot name="title"></slot></div>
-        <div id="body"><slot name="default"></slot></div>
-        <div>
-          <button v-if="isModalActive" @click.stop="confirmModal">
-            <slot name="yesButton">OK</slot>
-          </button>
-          <button v-if="isModalActive" @click.stop="closeModal">
-            <slot name="cancelButton">CANCEL</slot>
-          </button>
+    <transition name="modal">
+      <div class="modal" @click.stop="closeModal" v-if="isActive">
+        <div id="modalBox" @click.stop="blankEvent">
+          <div id="title"><slot name="title"></slot></div>
+          <div id="body"><slot name="default"></slot></div>
+          <div>
+            <button v-if="isModalActive" @click.stop="confirmModal">
+              <slot name="yesButton">OK</slot>
+            </button>
+            <button v-if="isModalActive" @click.stop="closeModal">
+              <slot name="cancelButton">CANCEL</slot>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </teleport>
 </template>
 
@@ -56,7 +58,7 @@ export default {
   align-items: center;
 }
 
-div #modal {
+div #modalBox {
   z-index: 100;
   width: 450px;
   height: 200px;
@@ -96,5 +98,25 @@ button {
 
 button:hover {
   background: black;
+}
+
+.modal-enter-active {
+  animation: modal 0.2s ease-in;
+}
+
+.modal-leave-active {
+  animation: modal 0.2s ease-out reverse;
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.3);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 </style>

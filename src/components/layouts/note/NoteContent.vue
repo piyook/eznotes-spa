@@ -1,5 +1,5 @@
 <template>
-  <alert-modal v-if="isModalVisible" v-bind:is-active="isModalVisible">
+  <alert-modal v-bind:is-active="isModalVisible">
     <template v-slot:title>Warning</template>
     Are You Sure You Want to Delete This?
     <template v-slot:yesButton>YES</template>

@@ -1,8 +1,10 @@
 <template>
-  <hero-section></hero-section>
-  <features-section></features-section>
-  <pricing-section></pricing-section>
-  <call-to-action></call-to-action>
+  <div>
+    <hero-section></hero-section>
+    <features-section></features-section>
+    <pricing-section></pricing-section>
+    <call-to-action></call-to-action>
+  </div>
 </template>
 
 <script>

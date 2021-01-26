@@ -1,7 +1,10 @@
 <template>
   <div :class="boardColour">
     <img src="../../../assets/back-arrow.png" @click="goHome" />
-    <h1 v-if="isBoardAvailable">{{ boardTitle }}</h1>
+
+    <h1 v-if="isBoardAvailable">
+      <span class="smallText">NoticeBoard {{ boardNumber }} <br /> </span>{{ boardTitle }}
+    </h1>
     <p>Click a Note to Read or Edit</p>
   </div>
 </template>
@@ -18,6 +21,12 @@ export default {
     isBoardAvailable() {
       return this.$store.getters["boards/isBoardDataLoaded"];
     },
+    boardNumber() {
+      console.log(
+        this.$store.getters["boards/getBoardNumber"](this.$route.params.boardId)
+      );
+      return this.$store.getters["boards/getBoardNumber"](this.$route.params.boardId);
+    },
   },
   methods: {
     goHome() {
@@ -31,10 +40,19 @@ export default {
 </script>
 
 <style scoped>
+.smallText {
+  font-size: 24px;
+  letter-spacing: 3px;
+  color: white;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
 img {
   width: 60px;
   height: 60px;
-  margin: 20px;
+  margin: 20px 0px 0px 20px;
 }
 
 img:hover {
@@ -91,5 +109,17 @@ p {
 
 .red {
   background: #f65f6a;
+}
+
+@media only screen and (max-width: 750px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    margin: 10px 0px 0px 10px;
+  }
 }
 </style>

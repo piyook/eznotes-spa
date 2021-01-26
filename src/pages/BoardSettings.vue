@@ -1,5 +1,7 @@
 <template>
-  <board-options></board-options>
+  <div>
+    <board-options></board-options>
+  </div>
 </template>
 
 <script>

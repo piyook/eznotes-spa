@@ -49,5 +49,10 @@ a {
   letter-spacing: normal;
   text-align: left;
   color: #fffbfb;
+  transition: all 1s;
+}
+
+a:hover {
+  color: #f2f20e;
 }
 </style>

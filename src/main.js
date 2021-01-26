@@ -32,4 +32,6 @@ app.config.errorHandler = (err)=>{
 
 app.config.devtools = true;
 
-app.mount('#app')
+router.isReady().then(function() {
+app.mount('#app');
+});

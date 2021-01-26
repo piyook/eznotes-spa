@@ -21,9 +21,8 @@ export default {
 #form {
   background-color: #d13838;
   color: white;
-  width: 800px;
-  min-height: 500px;
   text-align: center;
+  padding: 50px;
 }
 
 h1 {

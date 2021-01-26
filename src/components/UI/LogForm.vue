@@ -169,6 +169,11 @@ input {
 .highlightError {
   background-color: black;
 }
+
+p {
+  color: #f2f20e;
+}
+
 input:focus,
 button:focus {
   outline: none;
@@ -180,6 +185,7 @@ button {
   height: 55px;
   margin: 30px 0px;
   border: none;
+  border-radius: 5px;
   background-color: #f2f20e;
   color: black;
   font-size: 30px;
@@ -189,10 +195,12 @@ button {
   line-height: 1.23;
   letter-spacing: normal;
   color: #000000;
+  transition: all 1.5s ease-in-out;
 }
 
 button:hover {
-  border: 1px solid darkred;
+  background: black;
+  color: #f2f20e;
 }
 
 .login {
@@ -211,7 +219,26 @@ button:hover {
   border: black 4px solid;
 }
 
-button {
-  transition: border 1s linear 0s;
+@media only screen and (max-width: 750px) {
+  label {
+    font-size: 20px;
+  }
+
+  input {
+    width: 170px;
+    font-size: 14px;
+  }
+
+  .login {
+    /* margin: 20px 0px; */
+    text-align: right;
+    margin-right: 20px;
+  }
+
+  .register {
+    /* margin: 5px 0px; */
+    text-align: right;
+    margin-right: 20px;
+  }
 }
 </style>

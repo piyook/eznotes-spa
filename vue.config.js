@@ -1,4 +1,5 @@
 module.exports = {
+  // publicPath: "/sites/eznotes/public/",
     configureWebpack: {
 
     //   devServer: {
@@ -18,7 +19,6 @@ module.exports = {
     //           },
     //   }
     // }
-
     devServer: {
       proxy: { 
         '/api':{
@@ -27,7 +27,7 @@ module.exports = {
         },
          
       },
-      headers: { "Access-Control-Allow-Origin": "http://localhost:8080",
+      headers: { "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "OPTIONS,GET,POST,PUT,DELETE",
       "Access-Control-Expose-Headers": "Set-Cookie",
       "Access-Control-Allow-Credentials": "true",

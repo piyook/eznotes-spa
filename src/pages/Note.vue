@@ -1,5 +1,7 @@
 <template>
-  <note-content></note-content>
+  <div>
+    <note-content></note-content>
+  </div>
 </template>
 
 <script>

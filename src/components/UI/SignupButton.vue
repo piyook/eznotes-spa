@@ -18,6 +18,7 @@ button {
   height: 88px;
   margin: 30px 0px;
   border: none;
+  border-radius: 5px;
   background-color: #f2f20e;
   color: black;
   font-size: 40px;
@@ -27,9 +28,11 @@ button {
   line-height: 1.23;
   letter-spacing: normal;
   color: #000000;
+  transition: all 1.5s ease-in-out;
 }
 
 button:hover {
-  border: 1px solid darkred;
+  background: black;
+  color: #f2f20e;
 }
 </style>

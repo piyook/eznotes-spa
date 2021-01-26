@@ -54,6 +54,7 @@ section {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 p {
@@ -86,6 +87,9 @@ p {
 #noteText {
   font-weight: 600;
   margin: 5px;
+  width: 250px;
+  word-wrap: break-word;
+  white-space: pre-line;
 }
 
 * {
