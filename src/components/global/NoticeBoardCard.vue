@@ -19,7 +19,7 @@ div {
   font-size: 30px;
   font-weight: 300;
   text-align: center;
-  margin: 50px;
+  margin: 30px;
   border: 2px solid rgb(220, 220, 220);
   border-radius: 6px;
   display: flex;

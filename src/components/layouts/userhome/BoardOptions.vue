@@ -84,7 +84,6 @@ export default {
   methods: {
     logResponse(data) {
       this.modalResponse = data;
-      console.log(this.modalResponse);
     },
     goBack() {
       this.$router.back();
@@ -169,7 +168,7 @@ p {
 }
 #page {
   border: 1px solid black;
-  margin: 60px;
+  margin: 20px;
 }
 
 h1 {
@@ -201,6 +200,7 @@ textarea {
   outline: none;
   width: 100%;
   height: 200px;
+  padding: 10px;
 }
 
 #title label,

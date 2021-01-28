@@ -1,9 +1,21 @@
 <template>
+  <alert-modal v-bind:is-active="isModalVisible">
+    <template v-slot:title>
+      <span v-if="isLoginMode">Login Error</span>
+      <span v-else>Registration Error</span>
+    </template>
+    <span v-if="isLoginMode">Please Supply A Valid Email and Password</span>
+    <span v-else>Email Address Taken - Please Supply Another</span>
+    <template v-slot:yesButton>CANCEL</template>
+    <template v-slot:cancelButton>RETRY</template>
+  </alert-modal>
+
   <form>
     <div :class="formModeClass">
       <label for="InputEmail">email</label>
       <input
         type="email"
+        autocomplete="on"
         id="InputEmail"
         :class="{ invalid: !email.isValid }"
         aria-describedby="email"
@@ -17,6 +29,7 @@
       <label for="InputPassword1">password</label>
       <input
         type="password"
+        autocomplete="on"
         class="form-control"
         id="InputPassword1"
         :class="{ invalid: !password.isValid }"
@@ -31,6 +44,7 @@
       <label for="InputPassword2">retype password</label>
       <input
         type="password"
+        autocomplete="off"
         class="form-control"
         id="InputPassword2"
         :class="{ invalid: !retypedPw.isValid }"
@@ -70,6 +84,7 @@ export default {
         errorMsg: "",
       },
       formIsValid: true,
+      modalVisibility: false,
     };
   },
   computed: {
@@ -80,6 +95,9 @@ export default {
         return { register: true };
       }
     },
+    isModalVisible() {
+      return this.modalVisibility;
+    },
   },
   methods: {
     async submitForm() {
@@ -88,19 +106,29 @@ export default {
         return;
       }
       if (this.isLoginMode) {
-        await this.$store.dispatch({
+        let result = await this.$store.dispatch({
           type: "login",
           email: this.email.val,
           password: this.password.val,
         });
 
+        if (result.message === "ERROR") {
+          await this.authError();
+          return;
+        }
+
         this.$router.push("/userhome");
       } else {
-        await this.$store.dispatch({
+        let result = await this.$store.dispatch({
           type: "register",
           email: this.email.val,
           password: this.password.val,
         });
+
+        if (result.message === "ERROR") {
+          await this.authError();
+          return;
+        }
 
         this.$router.push("/userhome");
       }
@@ -140,6 +168,18 @@ export default {
       this.validatePassword();
       if (!this.isLoginMode) {
         this.validateRetypePassword();
+      }
+    },
+    async authError() {
+      this.modalVisibility = true;
+      let modalResponse = await this.$store.dispatch("awaitModalResponse");
+
+      this.modalVisibility = false;
+      document.documentElement.style.overflow = "auto";
+
+      if (modalResponse) {
+        this.$store.commit("updateAuth", { isLoggedIn: false });
+        this.$router.push("/");
       }
     },
   },

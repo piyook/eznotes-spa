@@ -22,9 +22,6 @@ export default {
       return this.$store.getters["boards/isBoardDataLoaded"];
     },
     boardNumber() {
-      console.log(
-        this.$store.getters["boards/getBoardNumber"](this.$route.params.boardId)
-      );
       return this.$store.getters["boards/getBoardNumber"](this.$route.params.boardId);
     },
   },
@@ -61,6 +58,7 @@ img:hover {
 div {
   background-color: #d13838;
   color: #ffffff;
+  width: 100%;
 }
 
 h1 {

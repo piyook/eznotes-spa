@@ -1,5 +1,5 @@
 <template>
-  <load-spinner v-if="isLoading"></load-spinner>
+  <load-spinner v-if="isApploading"></load-spinner>
   <section>
     <notice-board-card
       v-for="(board, index) in noticeboards"
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -33,9 +34,7 @@ export default {
     };
   },
   computed: {
-    isLoading() {
-      return this.$store.getters.isAppLoading;
-    },
+    ...mapGetters(["isApploading"]),
   },
   methods: {
     viewBoard(boardId) {

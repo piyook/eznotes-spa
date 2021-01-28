@@ -56,17 +56,20 @@ const routes = [
       });
 
       if (response.ok) {
+        const responseData = await response.json();
+        
         store.commit("updateAuth", { isLoggedIn: true }, { root: true });
 
         store.commit("setUser", { email: responseData.email });
 
         router.push("/userhome");
-      } else {
-        router.push("/error");
-        return;
-      }
+      } 
+      // else {
+      //   router.push("/error");
+      //   return;
+      // }
 
-      const responseData = await response.json();
+      
     },
   },
   {

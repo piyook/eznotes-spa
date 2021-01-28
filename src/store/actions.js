@@ -17,10 +17,12 @@ export default {
       },
       { root: true }
     );
-   
+
     context.commit("setUser", { email: responseData.email });
 
     await context.commit("updateAuth", { isLoggedIn: true });
+
+    return responseData;
 
   },
 
@@ -41,6 +43,8 @@ export default {
     context.commit("setUser", { email: responseData.email });
 
     await context.commit("updateAuth", { isLoggedIn: true });
+
+    return responseData;
 
   },
 

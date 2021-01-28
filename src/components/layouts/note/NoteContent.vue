@@ -176,7 +176,7 @@ export default {
 <style scoped>
 #page {
   border: 1px solid black;
-  margin: 60px;
+  margin: 20px;
 }
 
 #back:hover {
@@ -202,6 +202,7 @@ textarea {
   outline: none;
   width: 100%;
   height: 200px;
+  padding: 10px;
 }
 
 #title label {
@@ -291,6 +292,11 @@ img:hover {
 }
 
 @media only screen and (max-width: 750px) {
+  #page {
+    overflow-x: hidden;
+    margin: 10px;
+  }
+
   #title label {
     font-size: 20px;
     margin-right: 10px;

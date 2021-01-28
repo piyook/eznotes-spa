@@ -25,9 +25,16 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   min-height: 90vh;
-  /* width: 80vw; */
   border: 1px solid black;
-  margin: 80px;
+  margin: 30px;
+}
+
+@media only screen and (max-width: 750px) {
+  #page {
+    overflow-x: hidden;
+    margin: 10px;
+  }
 }
 </style>
